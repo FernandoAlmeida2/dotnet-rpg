@@ -1,11 +1,13 @@
+using dotnet_rpg.Models;
+
 namespace dotnet_rpg.Services.CharacterService
 {
     public interface ICharacterService
     {
-        Task<List<Character>> getAllCharacters();
+        Task<ServiceResponse<List<Character>>> getAllCharacters();
 
-        Task<Character> getCharacterById(int id);
+        Task<ServiceResponse<Character>> getCharacterById(int id);
 
-        Task<List<Character>> saveCharacter(Character newCharacter);
+        Task<ServiceResponse<List<Character>>> saveCharacter(Character newCharacter);
     }
 }
