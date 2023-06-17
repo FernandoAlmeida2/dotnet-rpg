@@ -6,12 +6,12 @@ namespace dotnet_rpg.Services.CharacterService
             new Character(),
             new Character { Id = 1, Name = "Sam" }
         };
-        public List<Character> getAllCharacters()
+        public async Task<List<Character>> getAllCharacters()
         {
             return characters;
         }
 
-        public Character getCharacterById(int id)
+        public async Task<Character> getCharacterById(int id)
         {
             var character = characters.FirstOrDefault(c => c.Id == id);
             if (character is null)
@@ -21,7 +21,7 @@ namespace dotnet_rpg.Services.CharacterService
             return character;
         }
 
-        public List<Character> saveCharacter(Character newCharacter)
+        public async Task<List<Character>> saveCharacter(Character newCharacter)
         {
             characters.Add(newCharacter);
             return characters;
