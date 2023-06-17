@@ -32,6 +32,7 @@ namespace dotnet_rpg.Services.CharacterService
                 serviceResponse.Success = false;
                 serviceResponse.Message = "Character not found";
             }
+
             return serviceResponse;
         }
 
@@ -42,6 +43,7 @@ namespace dotnet_rpg.Services.CharacterService
             character.Id = characters.Max(c => c.Id) + 1;
             characters.Add(character);
             serviceResponse.Data = characters.Select(c => _mapper.Map<CharacterResponseDto>(c)).ToList();
+            serviceResponse.Message = "Character added successfully!";
             return serviceResponse;
         }
 
@@ -62,6 +64,7 @@ namespace dotnet_rpg.Services.CharacterService
                 character.Defense = updateCharacter.Defense;
                 character.Intelligence = updateCharacter.Intelligence;
                 character.Class = updateCharacter.Class;
+                serviceResponse.Message = "Character updated successfully!";
 
                 serviceResponse.Data = _mapper.Map<CharacterResponseDto>(character);
             }
