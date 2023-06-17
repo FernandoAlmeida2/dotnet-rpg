@@ -13,7 +13,12 @@ namespace dotnet_rpg.Services.CharacterService
 
         public Character getCharacterById(int id)
         {
-            return characters.FirstOrDefault(c => c.Id == id);
+            var character = characters.FirstOrDefault(c => c.Id == id);
+            if (character is null)
+            {
+                throw new Exception("Character not found");
+            }
+            return character;
         }
 
         public List<Character> saveCharacter(Character newCharacter)
