@@ -1,6 +1,6 @@
 namespace dotnet_rpg.Dtos.Character
 {
-    public class AddCharacterRequestDto
+    public class CharacterRequestDto
     {
         public string Name { get; set; } = "Frodo";
         public int HitPoints { get; set; } = 100;

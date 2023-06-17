@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace dotnet_rpg.Dtos.Character
 {
-    public class GetCharacterResponseDto
+    public class CharacterResponseDto
     {
         public int Id { get; set; }
         public string Name { get; set; } = "Frodo";
