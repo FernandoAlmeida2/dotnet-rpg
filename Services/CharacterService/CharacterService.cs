@@ -1,5 +1,6 @@
 using AutoMapper;
 using dotnet_rpg.Dtos.Character;
+using Microsoft.AspNetCore.Mvc;
 
 namespace dotnet_rpg.Services.CharacterService
 {
@@ -15,6 +16,7 @@ namespace dotnet_rpg.Services.CharacterService
         {
             this._mapper = mapper;
         }
+
         public async Task<ServiceResponse<List<CharacterResponseDto>>> getAllCharacters()
         {
             var serviceResponse = new ServiceResponse<List<CharacterResponseDto>>();
@@ -59,10 +61,30 @@ namespace dotnet_rpg.Services.CharacterService
             else
             {
                 _mapper.Map(updateCharacter, character);
-                serviceResponse.Message = "Character updated successfully!";
-
                 serviceResponse.Data = _mapper.Map<CharacterResponseDto>(character);
+                serviceResponse.Message = "Character updated successfully!";
             }
+
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<List<CharacterResponseDto>>> DeleteCharacter(int id)
+        {
+            var serviceResponse = new ServiceResponse<List<CharacterResponseDto>>();
+            var character = characters.FirstOrDefault(c => c.Id == id);
+
+            if (character is null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Character not found";
+            }
+            else
+            {
+                characters.Remove(character);
+                serviceResponse.Message = "Character deleted successfully!";
+            }
+
+            serviceResponse.Data = characters.Select(c => _mapper.Map<CharacterResponseDto>(c)).ToList();
 
             return serviceResponse;
         }
