@@ -1,4 +1,3 @@
-using dotnet_rpg.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace dotnet_rpg.Data
@@ -11,5 +10,6 @@ namespace dotnet_rpg.Data
         }
 
         public DbSet<Character> Characters => Set<Character>();
+        public DbSet<User> Users => Set<User>();
     }
 }
