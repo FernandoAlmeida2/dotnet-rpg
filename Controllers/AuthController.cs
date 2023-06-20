@@ -15,11 +15,24 @@ namespace dotnet_rpg.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<ActionResult<ServiceResponse<int>>> Register(UserRegisterDto newUser) {
+        public async Task<ActionResult<ServiceResponse<int>>> Register(UserRegisterDto newUser)
+        {
             var response = await _authRepo.Register(
-                new User {Username = newUser.Username}, newUser.Password
+                new User { Username = newUser.Username }, newUser.Password
             );
-            if(!response.Success) {
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+
+        [HttpPost("Login")]
+        public async Task<ActionResult<ServiceResponse<int>>> Login(UserLoginDto user)
+        {
+            var response = await _authRepo.Login(user.Username, user.Password);
+            if (!response.Success)
+            {
                 return BadRequest(response);
             }
             return Ok(response);
