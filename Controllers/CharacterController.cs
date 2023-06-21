@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using dotnet_rpg.Dtos.Character;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +17,12 @@ namespace dotnet_rpg.Controllers
             this._characterService = characterService;
         }
 
+        //[AllowAnonymous]
         [HttpGet("GetAll")]
         public async Task<ActionResult<ServiceResponse<List<CharacterResponseDto>>>> GetAll()
         {
-            return Ok(await _characterService.getAllCharacters());
+            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value);
+            return Ok(await _characterService.getAllCharacters(userId));
         }
 
         [HttpGet("{id}")]
