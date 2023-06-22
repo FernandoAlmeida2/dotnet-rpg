@@ -32,7 +32,8 @@ namespace dotnet_rpg.Services.CharacterService
         public async Task<ServiceResponse<CharacterResponseDto>> getCharacterById(int id)
         {
             var serviceResponse = new ServiceResponse<CharacterResponseDto>();
-            var dbCharacter = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
+            var dbCharacter = await _context.Characters
+                .FirstOrDefaultAsync(c => c.Id == id && c.User!.Id == GetUserId());
             serviceResponse.Data = _mapper.Map<CharacterResponseDto>(dbCharacter); ;
             if (dbCharacter is null)
             {
@@ -63,8 +64,10 @@ namespace dotnet_rpg.Services.CharacterService
         public async Task<ServiceResponse<CharacterResponseDto>> UpdateCharacter(int id, CharacterRequestDto updateCharacter)
         {
             var serviceResponse = new ServiceResponse<CharacterResponseDto>();
-            var character = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
-            if (character is null)
+            var character = await _context.Characters
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(c => c.Id == id);
+            if (character is null || character.User!.Id != GetUserId())
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = "Character not found";
@@ -83,7 +86,8 @@ namespace dotnet_rpg.Services.CharacterService
         public async Task<ServiceResponse<List<CharacterResponseDto>>> DeleteCharacter(int id)
         {
             var serviceResponse = new ServiceResponse<List<CharacterResponseDto>>();
-            var character = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
+            var character = await _context.Characters
+                .FirstOrDefaultAsync(c => c.Id == id && c.User!.Id == GetUserId());
 
             if (character is null)
             {
@@ -95,10 +99,12 @@ namespace dotnet_rpg.Services.CharacterService
                 _context.Characters.Remove(character);
                 await _context.SaveChangesAsync();
                 serviceResponse.Message = "Character deleted successfully!";
+                serviceResponse.Data =
+                await _context.Characters
+                    .Where(c => c.User!.Id == GetUserId())
+                    .Select(c => _mapper.Map<CharacterResponseDto>(c))
+                    .ToListAsync();
             }
-
-            serviceResponse.Data =
-                await _context.Characters.Select(c => _mapper.Map<CharacterResponseDto>(c)).ToListAsync();
 
             return serviceResponse;
         }
