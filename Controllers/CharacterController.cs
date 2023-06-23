@@ -33,7 +33,7 @@ namespace dotnet_rpg.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ServiceResponse<List<CharacterResponseDto>>>> Post(
+        public async Task<ActionResult<ServiceResponse<List<CharacterResponseDto>>>> PostCharacter(
             CharacterRequestDto newCharacter)
         {
             return Ok(await _characterService.saveCharacter(newCharacter));
@@ -53,6 +53,20 @@ namespace dotnet_rpg.Controllers
         {
             var response = await _characterService.DeleteCharacter(id);
             if (response.Data is null) return NotFound(response);
+            return Ok(response);
+        }
+
+        [HttpPost("Skill")]
+        public async Task<ActionResult<ServiceResponse<CharacterResponseDto>>> PostCharacterSkill(
+            CharacterSkillRequestDto newCharacterSkill)
+        {
+            var response = await _characterService.AddCharacterSkill(newCharacterSkill);
+            if(response.Data is null) {
+                if (response.Message.Equals("Character not found")) return NotFound(response);
+                if (response.Message.Equals("Character already has this skill")) return Conflict(response);
+                return BadRequest(response);
+            }
+           
             return Ok(response);
         }
     }
