@@ -3,7 +3,7 @@ using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
-namespace dotnet_rpg.Data
+namespace dotnet_rpg.Repositories.Auth
 {
     public class AuthRepository : IAuthRepository
     {
