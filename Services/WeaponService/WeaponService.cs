@@ -8,45 +8,34 @@ namespace dotnet_rpg.Services.WeaponService
 {
     public class WeaponService : IWeaponService
     {
-        private readonly DataContext _context;
+        private readonly IWeaponRepository _weaponRepository;
         private readonly IMapper _mapper;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ICharacterRepository _characterRepository;
 
-        public WeaponService(DataContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public WeaponService(IWeaponRepository weaponRepository, ICharacterRepository characterRepository, IMapper mapper)
         {
-            _context = context;
+            _weaponRepository = weaponRepository;
+            _characterRepository = characterRepository;
             _mapper = mapper;
-            _httpContextAccessor = httpContextAccessor;
         }
 
-        private int GetUserId() => int.Parse(_httpContextAccessor.HttpContext!.User
-            .FindFirstValue(ClaimTypes.NameIdentifier)!);
         public async Task<ServiceResponse<CharacterResponseDto>> AddWeapon(WeaponRequestDto newWeapon)
         {
             var response = new ServiceResponse<CharacterResponseDto>();
             try
             {
-                var character = await _context.Characters
-                .FirstOrDefaultAsync(c => c.Id == newWeapon.CharacterId && c.User!.Id == GetUserId());
+                var character = await _characterRepository.getCharacterById(newWeapon.CharacterId);
 
-            if(character is null) {
-                response.Success = false;
-                response.Message = "Character not found";
-            } else {
+                if (character is null) throw new Exception("Character not found");
+
                 var weapon = _mapper.Map<Weapon>(newWeapon);
-                _context.Weapons.Add(weapon);
-                await _context.SaveChangesAsync();
+                await _weaponRepository.AddWeapon(weapon);
 
                 response.Data = _mapper.Map<CharacterResponseDto>(character);
-                response.Message = "Weapon added successfully!";    
+                response.Message = "Weapon added successfully!";
             }
-            }
-            catch (Exception ex)
-            {
-                response.Success = false;
-                response.Message = ex.Message;
-            }
-            
+            catch (Exception ex) { response.HandleError(ex.Message); }
+
             return response;
         }
     }

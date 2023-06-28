@@ -36,7 +36,7 @@ namespace dotnet_rpg.Controllers
         public async Task<ActionResult<ServiceResponse<List<CharacterResponseDto>>>> PostCharacter(
             CharacterRequestDto newCharacter)
         {
-            return Ok(await _characterService.saveCharacter(newCharacter));
+            return Created("Create a character", await _characterService.saveCharacter(newCharacter));
         }
 
         [HttpPut("{id}")]
@@ -67,7 +67,7 @@ namespace dotnet_rpg.Controllers
                 return BadRequest(response);
             }
            
-            return Ok(response);
+            return Created("Add skill to a character", response);
         }
     }
 }

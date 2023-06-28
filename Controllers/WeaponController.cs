@@ -25,7 +25,7 @@ namespace dotnet_rpg.Controllers
                 return NotFound(response);
             }
 
-            return Ok(response);
+            return Created("Add weapon to a character", response);
         }
     }
 }

@@ -1,6 +1,7 @@
 global using dotnet_rpg.Models;
 global using dotnet_rpg.Services.CharacterService;
 global using dotnet_rpg.Services.WeaponService;
+global using dotnet_rpg.Repositories.WeaponRepository;
 global using dotnet_rpg.Services.FightService;
 global using dotnet_rpg.Repositories.Auth;
 global using dotnet_rpg.Data;
@@ -38,6 +39,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<ICharacterService, CharacterService>();
 builder.Services.AddScoped<IWeaponService, WeaponService>();
+builder.Services.AddScoped<IWeaponRepository, WeaponRepository>();
 builder.Services.AddScoped<IFightService, FightService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
