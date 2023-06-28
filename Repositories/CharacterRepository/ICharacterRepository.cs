@@ -4,6 +4,7 @@ namespace dotnet_rpg.Repositories.CharacterRepository
     {
         Task<List<Character>> getAllCharacters();
         Task<Character?> getCharacterById(int id);
+        Task<Character?> getAnyCharacterById(int id);
         Task<List<Character>> saveCharacter(Character newCharacter);
         Task UpdateCharacter(Character character);
         Task<List<Character>> DeleteCharacter(Character character);

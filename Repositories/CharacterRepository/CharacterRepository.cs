@@ -31,6 +31,14 @@ namespace dotnet_rpg.Repositories.CharacterRepository
                 .FirstOrDefaultAsync(c => c.Id == id && c.User!.Id == _userContext.GetUserId());
         }
 
+        public async Task<Character?> getAnyCharacterById(int id)
+        {
+            return await _context.Characters
+                .Include(c => c.Weapon)
+                .Include(c => c.Skills)
+                .FirstOrDefaultAsync(c => c.Id == id);
+        }
+
         public async Task<List<Character>> saveCharacter(Character newCharacter)
         {
             newCharacter.User = await _context.Users.FirstOrDefaultAsync(u => u.Id == _userContext.GetUserId());

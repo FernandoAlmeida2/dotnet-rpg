@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace dotnet_rpg.Dtos.Fight
 {
     public class AttackResultDto
@@ -13,4 +8,4 @@ namespace dotnet_rpg.Dtos.Fight
         public int OpponentHP { get; set; }
         public int Damage { get; set; }
     }
-}
+}   

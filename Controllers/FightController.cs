@@ -1,7 +1,10 @@
+using dotnet_rpg.Dtos.Fight;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dotnet_rpg.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[Controller]")]
     public class FightController : ControllerBase
@@ -11,6 +14,14 @@ namespace dotnet_rpg.Controllers
         public FightController(IFightService fightService)
         {
             _fightService = fightService;
+        }
+
+        [HttpPost("Weapon")]
+        public async Task<ActionResult<ServiceResponse<AttackResultDto>>> WeaponAttack(WeaponAttackDto request)
+        {
+            var response = await _fightService.WeaponAttack(request);
+            if (response.Data is null) return NotFound(response);
+            return Ok(response);
         }
     }
 }
