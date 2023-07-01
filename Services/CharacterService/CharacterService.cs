@@ -40,7 +40,7 @@ namespace dotnet_rpg.Services.CharacterService
             CharacterRequestDto newCharacter)
         {
             var response = new ServiceResponse<List<CharacterResponseDto>>();
-            var character = _mapper.Map<Character>(newCharacter);
+            var character = new Character(newCharacter.Name, newCharacter.Class);
             var dbCharacters = await _repository.saveCharacter(character);
             response.Data = dbCharacters.Select(c => _mapper.Map<CharacterResponseDto>(c)).ToList();
             response.Message = "Character added successfully!";

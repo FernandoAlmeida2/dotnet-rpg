@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using dotnet_rpg.Data;
@@ -11,9 +12,11 @@ using dotnet_rpg.Data;
 namespace dotnet_rpg.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230701124716_NewCharacterFields")]
+    partial class NewCharacterFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,9 +106,6 @@ namespace dotnet_rpg.Migrations
                     b.Property<int>("Damage")
                         .HasColumnType("integer");
 
-                    b.Property<int>("MPCost")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -119,29 +119,19 @@ namespace dotnet_rpg.Migrations
                         {
                             Id = 1,
                             Damage = 30,
-                            MPCost = 10,
                             Name = "Fireball"
                         },
                         new
                         {
                             Id = 2,
                             Damage = 20,
-                            MPCost = 7,
                             Name = "Frenzy"
                         },
                         new
                         {
                             Id = 3,
                             Damage = 50,
-                            MPCost = 16,
                             Name = "Blizzard"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Damage = 50,
-                            MPCost = 16,
-                            Name = "Multiple shots"
                         });
                 });
 
